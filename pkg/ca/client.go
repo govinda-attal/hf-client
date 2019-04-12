@@ -32,7 +32,7 @@ func New(sdk *fabsdk.FabricSDK, orgName string) (Client, error) {
 	mspClient, err := msp.New(ctxProvider, msp.WithOrg(orgName))
 	if err != nil {
 		log.Println("Failed to create new ca client: ", err)
-		return nil, ErrFabricCAClientInitFailed
+		return nil, ErrClientInitFailed().WithError(err)
 	}
 	return &client{caClient: mspClient}, nil
 }
@@ -41,7 +41,7 @@ func (c *client) Register(rq *msp.RegistrationRequest) (string, error) {
 	secret, err := c.caClient.Register(rq)
 	if err != nil {
 		log.Println("Failed to register user: ", err)
-		return "", ErrFabricCAOperationFailed
+		return "", ErrOperationFailed().WithError(err)
 	}
 	return secret, nil
 }
@@ -50,7 +50,7 @@ func (c *client) Enroll(identityName string, secret string) error {
 	err := c.caClient.Enroll(identityName, msp.WithSecret(secret))
 	if err != nil {
 		log.Println("Failed to enroll user: ", err)
-		return ErrFabricCAOperationFailed
+		return ErrOperationFailed().WithError(err)
 	}
 	return nil
 }

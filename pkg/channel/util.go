@@ -1,6 +1,8 @@
 package channel
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 func getArrayDataAsBytes(arr []interface{}) (*[][]byte, error) {
 	var args [][]byte

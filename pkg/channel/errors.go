@@ -1,14 +1,52 @@
 package channel
 
-import "errors"
+import (
+	"encoding/json"
+	"strings"
 
-var (
-	//ErrFabricChannelClientInitFailed ...
-	ErrFabricChannelClientInitFailed = errors.New("Failed to initialize fabric channel client")
-	//ErrFabricChannelRqMarshalFailed ...
-	ErrFabricChannelRqMarshalFailed = errors.New("Failed to marshal request message")
-	//ErrFabricChannelRsUnMarshalFailed ...
-	ErrFabricChannelRsUnMarshalFailed = errors.New("Failed to unmarshal response message")
-	//ErrFabricChannelOperationFailed
-	ErrFabricChannelOperationFailed = errors.New("Failed to invoke/query on fabric channel")
+	"github.com/govinda-attal/kiss-lib/pkg/core/status"
+	"github.com/govinda-attal/kiss-lib/pkg/core/status/codes"
 )
+
+//ErrClientInitFailed ...
+func ErrClientInitFailed() status.ErrServiceStatus {
+	return status.ErrServiceStatus{
+		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to initialize fabric channel client"}, nil,
+	}
+}
+
+//ErrClientInitFailed ...
+func ErrClientInitFailed() status.ErrServiceStatus {
+	return status.ErrServiceStatus{
+		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to marshal request message"}, nil,
+	}
+}
+
+//ErrClientInitFailed ...
+func ErrClientInitFailed() status.ErrServiceStatus {
+	return status.ErrServiceStatus{
+		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to unmarshal response message"}, nil,
+	}
+}
+
+//ErrOperationFailed ...
+func ErrOperationFailed() status.ErrServiceStatus {
+	return status.ErrServiceStatus{
+		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to invoke/query on fabric channel"}, nil,
+	}
+}
+
+func extractAppErr(err error) error {
+	errStr := err.Error()
+	i := strings.Index(errStr, "{")
+	j := strings.LastIndex(errStr, "}")
+	if i > -1 && j > -1 && i < j {
+		b := []byte(errStr)[i : j+1]
+		var errSvc status.ErrServiceStatus
+		json.Unmarshal(b, &errSvc)
+		if errSvc.Code != 0 {
+			return errSvc
+		}
+	}
+	return ErrOperationFailed().WithError(err)
+}

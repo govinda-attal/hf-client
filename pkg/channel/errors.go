@@ -11,28 +11,28 @@ import (
 //ErrClientInitFailed ...
 func ErrClientInitFailed() status.ErrServiceStatus {
 	return status.ErrServiceStatus{
-		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to initialize fabric channel client"}, nil,
+		ServiceStatus: status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to initialize fabric channel client"},
 	}
 }
 
-//ErrClientInitFailed ...
-func ErrClientInitFailed() status.ErrServiceStatus {
+//ErrRqMarshalFailed ...
+func ErrRqMarshalFailed() status.ErrServiceStatus {
 	return status.ErrServiceStatus{
-		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to marshal request message"}, nil,
+		ServiceStatus: status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to marshal request message"},
 	}
 }
 
-//ErrClientInitFailed ...
-func ErrClientInitFailed() status.ErrServiceStatus {
+//ErrRsUnMarshalFailed ...
+func ErrRsUnMarshalFailed() status.ErrServiceStatus {
 	return status.ErrServiceStatus{
-		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to unmarshal response message"}, nil,
+		ServiceStatus: status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to unmarshal response message"},
 	}
 }
 
 //ErrOperationFailed ...
 func ErrOperationFailed() status.ErrServiceStatus {
 	return status.ErrServiceStatus{
-		status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to invoke/query on fabric channel"}, nil,
+		ServiceStatus: status.ServiceStatus{Code: codes.ErrInternal, Message: "Failed to invoke/query on fabric channel"},
 	}
 }
 

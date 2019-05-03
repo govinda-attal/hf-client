@@ -76,8 +76,8 @@ func (fc *FabChnClient) ExecuteWithTransArgs(ctx context.Context, ccID string, f
 		return nil, extractAppErr(err)
 	}
 
-	if _, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, resp)
+	if prs, ok := resp.(proto.Message); ok {
+		err = proto.Unmarshal(ccRs.Payload, prs)
 	} else {
 		err = json.Unmarshal(ccRs.Payload, resp)
 	}
@@ -106,8 +106,8 @@ func (fc *FabChnClient) QueryWithTransArgs(ctx context.Context, ccID string, fcn
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-	if _, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, resp)
+	if prs, ok := resp.(proto.Message); ok {
+		err = proto.Unmarshal(ccRs.Payload, prs)
 	} else {
 		err = json.Unmarshal(ccRs.Payload, resp)
 	}

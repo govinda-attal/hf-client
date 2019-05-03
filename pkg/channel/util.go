@@ -37,11 +37,11 @@ func getMapDataAsBytes(md map[string]interface{}) (*map[string][]byte, error) {
 		case string:
 			mb[tk] = []byte(v)
 		case proto.Message:
-			b, err := proto.Marshal(data.(proto.Message))
+			b, err := proto.Marshal(td.(proto.Message))
 			if err != nil {
 
 			}
-			args = append(args, b)
+			mb[tk] = b
 		default:
 			b, err := json.Marshal(td)
 			if err != nil {

@@ -2,9 +2,7 @@ package channel
 
 import (
 	"context"
-	"encoding/json"
 
-	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
@@ -75,13 +73,7 @@ func (fc *FabChnClient) ExecuteWithTransArgs(ctx context.Context, ccID string, f
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-
-	if prs, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, prs)
-	} else {
-		err = json.Unmarshal(ccRs.Payload, resp)
-	}
-
+	resp, err = unmarshalRs(ccRs.Payload, resp)
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)
 	}
@@ -106,11 +98,7 @@ func (fc *FabChnClient) QueryWithTransArgs(ctx context.Context, ccID string, fcn
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-	if prs, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, prs)
-	} else {
-		err = json.Unmarshal(ccRs.Payload, resp)
-	}
+	resp, err = unmarshalRs(ccRs.Payload, resp)
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)
 	}

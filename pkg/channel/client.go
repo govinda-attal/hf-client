@@ -1,6 +1,7 @@
 package channel
 
 import (
+	"github.com/golang/protobuf/proto"
 	"context"
 	"encoding/json"
 
@@ -74,7 +75,14 @@ func (fc *FabChnClient) ExecuteWithTransArgs(ctx context.Context, ccID string, f
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-	err = json.Unmarshal(ccRs.Payload, resp)
+	
+	if _, ok := resp.(proto.Message); ok {
+		err = proto.Unmarshal(ccRs.Payload, resp)	
+	}
+	else {
+		err = json.Unmarshal(ccRs.Payload, resp)		
+	}
+	
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)
 	}
@@ -99,7 +107,12 @@ func (fc *FabChnClient) QueryWithTransArgs(ctx context.Context, ccID string, fcn
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-	err = json.Unmarshal(ccRs.Payload, resp)
+	if _, ok := resp.(proto.Message); ok {
+		err = proto.Unmarshal(ccRs.Payload, resp)	
+	}
+	else {
+		err = json.Unmarshal(ccRs.Payload, resp)		
+	}
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)
 	}

@@ -1,10 +1,10 @@
 package channel
 
 import (
-	"github.com/golang/protobuf/proto"
 	"context"
 	"encoding/json"
 
+	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/msp"
@@ -75,14 +75,13 @@ func (fc *FabChnClient) ExecuteWithTransArgs(ctx context.Context, ccID string, f
 	if err != nil {
 		return nil, extractAppErr(err)
 	}
-	
+
 	if _, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, resp)	
+		err = proto.Unmarshal(ccRs.Payload, resp)
+	} else {
+		err = json.Unmarshal(ccRs.Payload, resp)
 	}
-	else {
-		err = json.Unmarshal(ccRs.Payload, resp)		
-	}
-	
+
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)
 	}
@@ -108,10 +107,9 @@ func (fc *FabChnClient) QueryWithTransArgs(ctx context.Context, ccID string, fcn
 		return nil, extractAppErr(err)
 	}
 	if _, ok := resp.(proto.Message); ok {
-		err = proto.Unmarshal(ccRs.Payload, resp)	
-	}
-	else {
-		err = json.Unmarshal(ccRs.Payload, resp)		
+		err = proto.Unmarshal(ccRs.Payload, resp)
+	} else {
+		err = json.Unmarshal(ccRs.Payload, resp)
 	}
 	if err != nil {
 		return nil, ErrRsUnMarshalFailed().WithError(err)

@@ -13,7 +13,7 @@ func getArrayDataAsBytes(arr []interface{}) (*[][]byte, error) {
 		case string:
 			args = append(args, []byte(v))
 		case proto.Message:
-			b, err := proto.Marshal(data)
+			b, err := proto.Marshal(data.(proto.Message))
 			if err != nil {
 
 			}
@@ -37,7 +37,7 @@ func getMapDataAsBytes(md map[string]interface{}) (*map[string][]byte, error) {
 		case string:
 			mb[tk] = []byte(v)
 		case proto.Message:
-			b, err := proto.Marshal(data)
+			b, err := proto.Marshal(data.(proto.Message))
 			if err != nil {
 
 			}

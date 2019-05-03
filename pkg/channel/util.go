@@ -2,6 +2,8 @@ package channel
 
 import (
 	"encoding/json"
+
+	"github.com/golang/protobuf/proto"
 )
 
 func getArrayDataAsBytes(arr []interface{}) (*[][]byte, error) {
@@ -10,6 +12,12 @@ func getArrayDataAsBytes(arr []interface{}) (*[][]byte, error) {
 		switch v := data.(type) {
 		case string:
 			args = append(args, []byte(v))
+		case proto.Message:
+			b, err := proto.Marshal(data)
+			if err != nil {
+
+			}
+			args = append(args, b)
 		default:
 			b, err := json.Marshal(data)
 			if err != nil {
@@ -28,6 +36,12 @@ func getMapDataAsBytes(md map[string]interface{}) (*map[string][]byte, error) {
 		switch v := td.(type) {
 		case string:
 			mb[tk] = []byte(v)
+		case proto.Message:
+			b, err := proto.Marshal(data)
+			if err != nil {
+
+			}
+			args = append(args, b)
 		default:
 			b, err := json.Marshal(td)
 			if err != nil {

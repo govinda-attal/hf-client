@@ -31,7 +31,7 @@ func getArrayDataAsBytes(arr []interface{}) (*[][]byte, error) {
 }
 
 func getMapDataAsBytes(md map[string]interface{}) (*map[string][]byte, error) {
-	var mb map[string][]byte
+	mb := make(map[string][]byte)
 	for tk, td := range md {
 		switch v := td.(type) {
 		case string:

@@ -54,12 +54,12 @@ func getMapDataAsBytes(md map[string]interface{}) (*map[string][]byte, error) {
 }
 
 func unmarshalRs(b []byte, rs interface{}) (interface{}, error) {
-	if prs, ok := resp.(proto.Message); ok {
-		if err := proto.Unmarshal(ccRs.Payload, prs); err != nil {
+	if prs, ok := rs.(proto.Message); ok {
+		if err := proto.Unmarshal(b, prs); err != nil {
 			return nil, err
 		}
 	} else {
-		if err := json.Unmarshal(ccRs.Payload, rs); err != nil {
+		if err := json.Unmarshal(b, rs); err != nil {
 			return nil, err
 		}
 	}
